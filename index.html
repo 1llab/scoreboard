@@ -17,43 +17,59 @@
       font-size: 2rem;
       margin-bottom: 1rem;
     }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      background: #222;
-      border-radius: 8px;
-      overflow: hidden;
-      box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+    .podium-container {
+      display: flex;
+      justify-content: center;
+      align-items: flex-end;
+      height: 300px;
+      margin-top: 20px;
     }
-    th, td {
-      padding: 10px;  /* 내부 여백 줄임 */
-      border-bottom: 1px solid #333;
-      font-size: 1rem;  /* 모바일 가독성 고려해서 조금 줄임 */
+    .podium {
+      display: flex;
+      align-items: flex-end;
       text-align: center;
     }
-    th {
-      background-color: #444;
+    .step {
+      width: 120px;
+      margin: 0 10px;
+      background: #444;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      align-items: center;
+      padding: 10px;
+      border-radius: 8px;
+      box-shadow: 0 5px 10px rgba(255, 255, 255, 0.2);
     }
-    tr:hover {
-      background-color: #333;
-    }
-    @media (max-width: 600px) {
-      body {
-        padding: 0.5rem;
-      }
-      h1 {
-        font-size: 1.8rem;
-      }
-      th, td {
-        padding: 8px;
-        font-size: 0.9rem;  /* 더 작은 화면에서 폰트 크기 조정 */
-      }
-    }
+    .first { height: 180px; background: gold; color: black; }
+    .second { height: 140px; background: silver; color: black; }
+    .third { height: 100px; background: #cd7f32; color: black; }
+    .rank { font-size: 1.5rem; font-weight: bold; }
+    .team { font-size: 1.2rem; margin-top: 5px; }
+    .score { font-size: 1rem; margin-top: 3px; }
   </style>
 </head>
 <body>
   <h1>🏆 체육대회 스코어보드</h1>
-  <div id="scoreboard">불러오는 중...</div>
+  
+  <div class="podium-container">
+    <div class="step second">
+      <div class="rank">🥈</div>
+      <div class="team" id="second-team">-</div>
+      <div class="score" id="second-score">-</div>
+    </div>
+    <div class="step first">
+      <div class="rank">🥇</div>
+      <div class="team" id="first-team">-</div>
+      <div class="score" id="first-score">-</div>
+    </div>
+    <div class="step third">
+      <div class="rank">🥉</div>
+      <div class="team" id="third-team">-</div>
+      <div class="score" id="third-score">-</div>
+    </div>
+  </div>
 
   <script>
     async function fetchScores() {
@@ -63,24 +79,22 @@
         const response = await fetch(sheetUrl);
         const data = await response.json();
 
-        let html = "<table><tr><th>순위</th><th>팀</th><th>총점</th></tr>";
-        data.sort((a, b) => parseInt(a.rank) - parseInt(b.rank)); // 순위 정렬
+        // 순위 순으로 정렬
+        data.sort((a, b) => parseInt(a.rank) - parseInt(b.rank));
 
-        data.forEach(row => {
-          let rankEmoji = row.rank === "1" ? "🥇" : row.rank === "2" ? "🥈" : row.rank === "3" ? "🥉" : row.rank;
-
-          html += `<tr>
-            <td>${rankEmoji}</td>
-            <td>${row.team}</td>
-            <td>${row.sum}</td>
-          </tr>`;
-        });
-
-        html += "</table>";
-        document.getElementById("scoreboard").innerHTML = html;
+        // 상위 3팀을 podium에 반영
+        if (data.length >= 3) {
+          document.getElementById("first-team").textContent = data[0].team;
+          document.getElementById("first-score").textContent = data[0].sum;
+          
+          document.getElementById("second-team").textContent = data[1].team;
+          document.getElementById("second-score").textContent = data[1].sum;
+          
+          document.getElementById("third-team").textContent = data[2].team;
+          document.getElementById("third-score").textContent = data[2].sum;
+        }
       } catch (error) {
-        document.getElementById("scoreboard").innerHTML = "❌ 데이터를 불러오는 데 실패했습니다.";
-        console.error(error);
+        console.error("데이터 불러오기 실패:", error);
       }
     }
 
