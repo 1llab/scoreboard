@@ -10,25 +10,25 @@
       background: linear-gradient(135deg, #1a1a1a, #2c2c2c);
       color: white;
       text-align: center;
-      padding: 2rem;
+      padding: 1rem;
+      margin: 0;
     }
     h1 {
-      font-size: 2.5rem;
-      margin-bottom: 2rem;
+      font-size: 2rem;
+      margin-bottom: 1rem;
     }
     table {
-      width: 80%;
-      margin: 0 auto;
+      width: 100%;
       border-collapse: collapse;
       background: #222;
-      border-radius: 12px;
+      border-radius: 8px;
       overflow: hidden;
-      box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+      box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
     }
     th, td {
-      padding: 16px;
+      padding: 10px;  /* 내부 여백 줄임 */
       border-bottom: 1px solid #333;
-      font-size: 1.2rem;
+      font-size: 1rem;  /* 모바일 가독성 고려해서 조금 줄임 */
       text-align: center;
     }
     th {
@@ -36,6 +36,18 @@
     }
     tr:hover {
       background-color: #333;
+    }
+    @media (max-width: 600px) {
+      body {
+        padding: 0.5rem;
+      }
+      h1 {
+        font-size: 1.8rem;
+      }
+      th, td {
+        padding: 8px;
+        font-size: 0.9rem;  /* 더 작은 화면에서 폰트 크기 조정 */
+      }
     }
   </style>
 </head>
