@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>체육대회 스코어보드</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      background: linear-gradient(135deg, #1a1a1a, #2c2c2c);
+      color: white;
+      text-align: center;
+      padding: 2rem;
+    }
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 2rem;
+    }
+    table {
+      margin: 0 auto;
+      border-collapse: collapse;
+      background: #222;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+    }
+    th, td {
+      padding: 16px 32px;
+      border-bottom: 1px solid #333;
+      font-size: 1.2rem;
+    }
+    th {
+      background-color: #444;
+    }
+    tr:hover {
+      background-color: #333;
+    }
+  </style>
+</head>
+<body>
+  <h1>🏆 체육대회 스코어보드</h1>
+  <div id="scoreboard">불러오는 중...</div>
+
+  <script>
+    async function fetchScores() {
+      const sheetId = "2PACX-1vSJnHkPkk7l1G3OPMqGoGhgyE9CSqu_D6zFVoxOfCBd8kFAZmAwdlUXwh-P-XJCu0GLeSH82pjNv__K";
+      const sheetName = "시트1"; // ← 한글 시트 이름 정확히!
+      const url = `https://opensheet.elk.sh/${sheetId}/${sheetName}`;
+
+      try {
+        const response = await fetch(url);
+        const data = await response.json();
+
+        let html = "<table><tr><th>팀</th><th>점수</th></tr>";
+        data.forEach(row => {
+          html += `<tr><td>${row.팀}</td><td>${row.점수}</td></tr>`;
+        });
+        html += "</table>";
+
+        document.getElementById("scoreboard").innerHTML = html;
+      } catch (error) {
+        document.getElementById("scoreboard").innerHTML = "❌ 데이터를 불러오는 데 실패했습니다.";
+        console.error(error);
+      }
+    }
+
+    fetchScores();
+    setInterval(fetchScores, 5000); // 5초마다 자동 갱신
+  </script>
+</body>
+</html>
