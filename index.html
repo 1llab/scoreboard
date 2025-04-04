@@ -17,17 +17,14 @@
       font-size: 2rem;
       margin-bottom: 1rem;
     }
+
+    /* 🏆 Podium (단상) 스타일 */
     .podium-container {
       display: flex;
       justify-content: center;
       align-items: flex-end;
       height: 300px;
       margin-top: 20px;
-    }
-    .podium {
-      display: flex;
-      align-items: flex-end;
-      text-align: center;
     }
     .step {
       width: 120px;
@@ -48,11 +45,40 @@
     .rank { font-size: 1.5rem; font-weight: bold; }
     .team { font-size: 1.2rem; margin-top: 5px; }
     .score { font-size: 1rem; margin-top: 3px; }
+
+    /* 📋 전체 순위 리스트 스타일 */
+    .scoreboard {
+      margin-top: 20px;
+      width: 90%;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+      background: #333;
+      color: white;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    th, td {
+      padding: 10px;
+      border-bottom: 1px solid #555;
+    }
+    th {
+      background: #222;
+    }
+    tr:nth-child(even) {
+      background: #444;
+    }
   </style>
 </head>
 <body>
   <h1>🏆 체육대회 스코어보드</h1>
   
+  <!-- 🏆 Podium (단상) -->
   <div class="podium-container">
     <div class="step second">
       <div class="rank">🥈</div>
@@ -69,6 +95,22 @@
       <div class="team" id="third-team">-</div>
       <div class="score" id="third-score">-</div>
     </div>
+  </div>
+
+  <!-- 📋 전체 순위 테이블 -->
+  <div class="scoreboard">
+    <table>
+      <thead>
+        <tr>
+          <th>순위</th>
+          <th>팀</th>
+          <th>점수</th>
+        </tr>
+      </thead>
+      <tbody id="score-table">
+        <!-- 데이터가 자동으로 채워짐 -->
+      </tbody>
+    </table>
   </div>
 
   <script>
@@ -93,6 +135,21 @@
           document.getElementById("third-team").textContent = data[2].team;
           document.getElementById("third-score").textContent = data[2].sum;
         }
+
+        // 📋 전체 순위 리스트 채우기
+        let tableHTML = "";
+        data.forEach((teamData) => {
+          tableHTML += `
+            <tr>
+              <td>${teamData.rank}</td>
+              <td>${teamData.team}</td>
+              <td>${teamData.sum}</td>
+            </tr>
+          `;
+        });
+
+        document.getElementById("score-table").innerHTML = tableHTML;
+
       } catch (error) {
         console.error("데이터 불러오기 실패:", error);
       }
