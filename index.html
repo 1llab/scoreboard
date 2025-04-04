@@ -2,6 +2,7 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>체육대회 스코어보드</title>
   <style>
     body {
@@ -16,6 +17,7 @@
       margin-bottom: 2rem;
     }
     table {
+      width: 80%;
       margin: 0 auto;
       border-collapse: collapse;
       background: #222;
@@ -24,9 +26,10 @@
       box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
     }
     th, td {
-      padding: 16px 32px;
+      padding: 16px;
       border-bottom: 1px solid #333;
       font-size: 1.2rem;
+      text-align: center;
     }
     th {
       background-color: #444;
@@ -34,6 +37,9 @@
     tr:hover {
       background-color: #333;
     }
+    .gold { color: gold; font-weight: bold; }
+    .silver { color: silver; font-weight: bold; }
+    .bronze { color: #cd7f32; font-weight: bold; }
   </style>
 </head>
 <body>
@@ -48,12 +54,23 @@
         const response = await fetch(sheetUrl);
         const data = await response.json();
 
-        let html = "<table><tr><th>팀</th><th>점수</th></tr>";
-        data.forEach(row => {
-          html += `<tr><td>${row.팀}</td><td>${row.점수}</td></tr>`;
-        });
-        html += "</table>";
+        let html = "<table><tr><th>순위</th><th>팀</th><th>총점</th></tr>";
+        data.sort((a, b) => parseInt(a.rank) - parseInt(b.rank)); // 순위 정렬
 
+        data.forEach(row => {
+          let rankClass = "";
+          if (row.rank === "1") rankClass = "gold";
+          else if (row.rank === "2") rankClass = "silver";
+          else if (row.rank === "3") rankClass = "bronze";
+
+          html += `<tr>
+            <td class="${rankClass}">${row.rank}</td>
+            <td>${row.team}</td>
+            <td>${row.sum}</td>
+          </tr>`;
+        });
+
+        html += "</table>";
         document.getElementById("scoreboard").innerHTML = html;
       } catch (error) {
         document.getElementById("scoreboard").innerHTML = "❌ 데이터를 불러오는 데 실패했습니다.";
