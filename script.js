@@ -45,4 +45,4 @@
         console.error("불러오기 실패:", err);
       });
 fetchLeaderboard();
-setInterval(fetchLeaderboard, 10000);
+setInterval(fetchLeaderboard, 1000);
