@@ -1,4 +1,4 @@
-const API_KEY = "여기에_너의_API_KEY";  // 발급한 API 키 입력
+const API_KEY = "AIzaSyB_147SKi5nH8n5S0P05pcT1ZjGIvIQryg";  // 발급한 API 키 입력
 const SPREADSHEET_ID = "1ZM_eN_XKNl4YFvVzJpbNgZlJjUbrx3qtlVqagKLcHkE";  // 구글 스프레드시트 ID
 const SHEET_NAME = "Shy";  // 시트 이름
 
